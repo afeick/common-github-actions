@@ -1,0 +1,40 @@
+name: Version Check
+description: "Verify that the PR has a valid version label"
+inputs:
+  version_labels:
+    default: ["major", "minor", "patch", "no version"]
+
+runs:
+  using: "composite"
+  env:
+    VERSION_LABELS: ${{ inputs.version_labels }}
+    PR_LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+    LABEL_COUNT: 0
+    LABEL: ""
+  steps:
+    - name: Check Labels
+      run: |
+        for version in ${VERSION_LABELS[@]}; do
+          echo "checking for version: ${version}"
+          for label in ${PR_LABELS[@]}; do
+            echo "comparing label: ${label}"
+            if [[ ${version} == ${label} ]]; then
+              LABEL_COUNT=$((LABEL_COUNT+1))
+              LABEL=${label}
+            fi
+          done
+        done
+        echo "LABEL_COUNT=${LABEL_COUNT}"
+        echo "LABEL=${LABEL}"
+
+        if [[ ${LABEL_COUNT} == 1 ]]; then
+          echo "::notice::Version verified!"
+          echo "::notice::Successfully identified version label for PR: ${LABEL}"
+        elif [[ ${LABEL_COUNT} < 1 ]]; then
+          echo "::error::No version label detected!"
+          echo "::error::PRs require one of the following labels: major, minor, patch, no version"
+        elif [[ ${LABEL_COUNT} > 1 ]]; then
+          echo "::error::Too many versions detected!"
+          echo "::error::Remove extra version label(s). Only one of the following is allowed: major, minor, patch, no version"
+        fi
+        exit $((LABEL_COUNT-1))
