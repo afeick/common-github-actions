@@ -16,4 +16,9 @@ jobs:
       - uses: afeick/common-github-actions/version_check@pr-version-check
         with:
           pr_labels: ${{ toJson(github.event.pull_request.labels.*.name) }}
+          version_labels: |
+            major
+            minor
+            patch
           pr_label_patch: bug fix
+
