@@ -39,7 +39,7 @@ runs:
         # PR_LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
         PR_LABELS: ${{ inputs.pr_labels }}
         VERSION_LABELS: ${{ inputs.version_labels }}
-        VERSION_LABELS_2: ${{ fromJson(inputs.version_labels) }}
+        # VERSION_LABELS_2: ${{ fromJson(inputs.version_labels) }}
         LABEL_COUNT: 0
         LABEL: ""
       run: |
