@@ -52,6 +52,9 @@ runs:
         echo "VERSION_LABELS: ${VERSION_LABELS}"
         echo "VERSION_LABELS_2: ${VERSION_LABELS_2}"
         echo "INPUTS: ${{ toJson(inputs) }}"
+        echo "INPUTS: ${{ toJson(github) }}"
+        echo "INPUTS: ${{ toJson(secrets) }}"
+        echo "INPUTS: ${{ toJson(env) }}"
 
         # for version in ${VERSION_LABELS[@]}; do
         #   echo "checking for version: ${version}"
