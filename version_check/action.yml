@@ -30,6 +30,7 @@ runs:
 
   steps:
     - name: Check Labels
+      shell: bash
       env:
         MAJOR_LABEL: ${{ inputs.pr_label_major }}
         MINOR_LABEL: ${{ inputs.pr_label_minor }}
