@@ -33,7 +33,8 @@ runs:
         LABEL: ""
       run: |
         VERSION_LABELS=( ${MAJOR_LABEL}, ${MINOR_LABEL}, ${PATCH_LABEL}, ${NO_RELEASE_LABEL})
-        echo "VERSION_LABELS: ${VERSION_LABELS}"
+        echo "VERSION_LABELS: ${VERSION_LABELS[*]}"
+        echo "PR_LABELS: ${PR_LABELS[*]}"
         for version in ${VERSION_LABELS[@]}; do
           echo "checking for version: ${version}"
           for label in ${PR_LABELS[@]}; do
@@ -53,9 +54,9 @@ runs:
           echo "::notice::Successfully identified version label for PR: ${LABEL}"
         elif [[ ${LABEL_COUNT} < 1 ]]; then
           echo "::error::No version label detected!"
-          echo "::error::PRs require one of the following labels: ${MAJOR_LABEL}, ${MINOR_LABEL}, ${PATCH_LABEL}, ${NO_RELEASE_LABEL}"
+          echo "::error::PRs require one of the following labels: ${VERSION_LABELS[*]}"
         elif [[ ${LABEL_COUNT} > 1 ]]; then
           echo "::error::Too many versions detected!"
-          echo "::error::Remove extra version label(s). Only one of the following is allowed: ${MAJOR_LABEL}, ${MINOR_LABEL}, ${PATCH_LABEL}, ${NO_RELEASE_LABEL}"
+          echo "::error::Remove extra version label(s). Only one of the following is allowed: ${VERSION_LABELS[*]}"
         fi
         exit $((LABEL_COUNT-1))
