@@ -14,3 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: afeick/common-github-actions/version_check@main
+        with:
+          version_labels: ${{ toJson(github.event.pull_request.labels.*.name) }}
+          pr_label_patch: bug fix
