@@ -28,7 +28,9 @@ runs:
     # - uses: actions/setup-node@v3
     #   with:
     #     node-version: 16
-    - run: npm install semver
+    - name: Install Semver
+      shell: bash
+      run: npm install semver
     - uses: actions/github-script@v6
       with:
         github-token: ${{ inputs.token }}
