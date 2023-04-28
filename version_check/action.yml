@@ -32,10 +32,10 @@ runs:
         LABEL_COUNT: 0
         LABEL: ""
       run: |
-        bash --version
-        readarray -t PR_LABELS < <(echo ${PR_LABELS_JSON} | jq -r '.[]')
+        declare -a VERSION_LABELS=( "${MAJOR_LABEL}" "${MINOR_LABEL}" "${PATCH_LABEL}" "${NO_RELEASE_LABEL}" )
         printf -v JOINED_LABELS "'%s', " "${VERSION_LABELS[@]}"
 
+        readarray -t PR_LABELS < <(echo ${PR_LABELS_JSON} | jq -r '.[]')
 
         for version in "${VERSION_LABELS[@]}"; do
           echo "checking for version: ${version}"
