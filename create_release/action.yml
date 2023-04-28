@@ -1,10 +1,9 @@
 name: Create Release
-description: ""
+description: "Creates a tag and release when a PR is merged. Uses the PR labels to increment the semantic version of the release."
 inputs:
   token:
     description: 'GITHUB_TOKEN or a `repo` scoped Personal Access Token (PAT)'
-    default: ${{ github.token }}
-    # default: ${{ secrets.GITHUB_TOKEN }}
+    required: true
   pr_label_major:
     description: "PR label name to use for bumping the major version."
     required: false
