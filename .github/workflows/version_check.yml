@@ -1,0 +1,17 @@
+name: Version Check
+
+on:
+  pull_request:
+    types: [opened, labeled, unlabeled, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check_pr_labels:
+    name: Verify PR label(s)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: afeick/common-github-actions/version_check@fd8bed0cdcdbd92b3d94b3272cdd26fe476c724c
+
