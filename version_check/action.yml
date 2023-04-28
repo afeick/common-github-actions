@@ -32,18 +32,20 @@ runs:
         LABEL_COUNT: 0
         LABEL: ""
       run: |
-        VERSION_LABELS=( ${MAJOR_LABEL}, ${MINOR_LABEL}, ${PATCH_LABEL}, ${NO_RELEASE_LABEL})
-        echo "VERSION_LABELS: ${VERSION_LABELS[*]}"
-        echo "PR_LABELS: ${PR_LABELS[*]}"
-        for version in ${VERSION_LABELS[@]}; do
+        bash --version
+        readarray -t PR_LABELS < <(echo ${PR_LABELS_JSON} | jq -r '.[]')
+        printf -v JOINED_LABELS "'%s', " "${VERSION_LABELS[@]}"
+
+
+        for version in "${VERSION_LABELS[@]}"; do
           echo "checking for version: ${version}"
-          for label in ${PR_LABELS[@]}; do
-            echo "comparing label: ${label}"
-            if [[ ${version} == ${label} ]]; then
-              echo "match: '${version}' == '${label}'"
-              LABEL_COUNT=$((LABEL_COUNT+1))
-              LABEL=${label}
-            fi
+          for label in "${PR_LABELS[@]}"; do
+          echo "comparing label: ${label}"
+          if [[ ${version} == ${label} ]]; then
+            echo "match: '${version}' == '${label}'"
+            LABEL_COUNT=$((LABEL_COUNT+1))
+            LABEL=${label}
+          fi
           done
         done
         echo "LABEL_COUNT=${LABEL_COUNT}"
@@ -54,9 +56,9 @@ runs:
           echo "::notice::Successfully identified version label for PR: ${LABEL}"
         elif [[ ${LABEL_COUNT} < 1 ]]; then
           echo "::error::No version label detected!"
-          echo "::error::PRs require one of the following labels: ${VERSION_LABELS[*]}"
+          echo "::error::PRs require one of the following labels: ${JOINED_LABELS%, }"
         elif [[ ${LABEL_COUNT} > 1 ]]; then
           echo "::error::Too many versions detected!"
-          echo "::error::Remove extra version label(s). Only one of the following is allowed: ${VERSION_LABELS[*]}"
+          echo "::error::Remove extra version label(s). Only one of the following is allowed: ${JOINED_LABELS%, }"
         fi
         exit $((LABEL_COUNT-1))
