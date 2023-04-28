@@ -13,5 +13,5 @@ jobs:
     name: Verify PR label(s)
     runs-on: ubuntu-latest
     steps:
-      - uses: afeick/common-github-actions/version_check@pr-version-check
+      - uses: afeick/common-github-actions/version_check@fd8bed0cdcdbd92b3d94b3272cdd26fe476c724c
 
