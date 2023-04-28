@@ -24,7 +24,7 @@ runs:
     - name: Check Labels
       shell: bash
       env:
-        PR_LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+        PR_LABELS_JSON: ${{ toJson(github.event.pull_request.labels.*.name) }}
         MAJOR_LABEL: ${{ inputs.pr_label_major }}
         MINOR_LABEL: ${{ inputs.pr_label_minor }}
         PATCH_LABEL: ${{ inputs.pr_label_patch }}
@@ -32,6 +32,7 @@ runs:
         LABEL_COUNT: 0
         LABEL: ""
       run: |
+        # Checking PR version labels
         declare -a VERSION_LABELS=( "${MAJOR_LABEL}" "${MINOR_LABEL}" "${PATCH_LABEL}" "${NO_RELEASE_LABEL}" )
         printf -v JOINED_LABELS "'%s', " "${VERSION_LABELS[@]}"
 
