@@ -13,7 +13,6 @@ on:
 permissions:
   contents: write
 
-
 jobs:
   create_release:
     name: "Create Release"
