@@ -23,14 +23,13 @@ inputs:
 
 
 runs:
-  using: 'node16'
+  using: "composite"
   steps:
-    # - uses: actions/setup-node@v3
-    #   with:
-    #     node-version: 16
-    - name: Install Semver
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - run: npm install semver
       shell: bash
-      run: npm install semver
     - uses: actions/github-script@v6
       with:
         github-token: ${{ inputs.token }}
